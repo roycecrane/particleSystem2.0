@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/app.iml" filepath="$PROJECT_DIR$/app.iml" group="ubbeucubcurcb (1) (another copy)/app" />
+      <module fileurl="file://$PROJECT_DIR$/../gles3jni1.iml" filepath="$PROJECT_DIR$/../gles3jni1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../ubbeucubcurcb (1) (another copy).iml" filepath="$PROJECT_DIR$/../ubbeucubcurcb (1) (another copy).iml" group="ubbeucubcurcb (1) (another copy)" />
+    </modules>
+  </component>
+</project>
