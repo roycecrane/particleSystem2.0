@@ -13,7 +13,6 @@ int of_hundred = 0;
 float avg_time = 0.0f;
 void Draw::transform() {
     t1=clock();
-
     glClear(GL_COLOR_BUFFER_BIT);
     d_ass->updateUniform("seeker",NULL);
     d_ass->updateUniform("touch", NULL);
@@ -58,22 +57,23 @@ void Draw::feedBack() {
 Draw::Draw(AssetManager* ass) {
     d_ass = ass;
     g_draw = this;
-    }
+}
 
 extern "C" {
-JNIEXPORT void JNICALL Java_com_android_gles3jni_GLES3JNILib_reset(JNIEnv *env, jclass obj);
-JNIEXPORT void JNICALL Java_com_android_gles3jni_GLES3JNILib_step(JNIEnv *env, jclass obj);
-JNIEXPORT void JNICALL Java_com_android_gles3jni_GLES3JNILib_inputs(JNIEnv * env , jclass obj, jfloatArray userInput , jstring inputName ) ;
+JNIEXPORT void JNICALL Java_com_android_gles3jni_ParticleSystemLib_reset(JNIEnv* env, jclass obj);
+JNIEXPORT void JNICALL Java_com_android_gles3jni_ParticleSystemLib_reset(JNIEnv *env, jclass obj);
+JNIEXPORT void JNICALL Java_com_android_gles3jni_ParticleSystemLib_step(JNIEnv *env, jclass obj);
+JNIEXPORT void JNICALL Java_com_android_gles3jni_ParticleSystemLib_inputs(JNIEnv * env , jclass obj, jfloatArray userInput , jstring inputName ) ;
 }
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_android_gles3jni_GLES3JNILib_step(JNIEnv* env, jclass obj) {
+Java_com_android_gles3jni_ParticleSystemLib_step(JNIEnv* env, jclass obj) {
     g_draw->transform();
     g_draw->feedBack();
 }
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_android_gles3jni_GLES3JNILib_inputs(JNIEnv* env, jclass obj,jfloatArray userInput,jstring inputName) {
+Java_com_android_gles3jni_ParticleSystemLib_inputs(JNIEnv* env, jclass obj, jfloatArray userInput, jstring inputName) {
     float *InputToCPP = env->GetFloatArrayElements(userInput,0 );
     env->ReleaseFloatArrayElements(userInput,InputToCPP, 0);
     const char *name = env->GetStringUTFChars(inputName, 0);
@@ -82,7 +82,7 @@ d_ass->updateUniform(name,InputToCPP);
 }
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_android_gles3jni_GLES3JNILib_reset(JNIEnv* env, jclass obj) {
+Java_com_android_gles3jni_ParticleSystemLib_reset(JNIEnv* env, jclass obj) {
     ALOGE("reset");
     reset_now = true;
 }

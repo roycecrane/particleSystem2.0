@@ -15,12 +15,12 @@ endif (${ANDROID_PLATFORM_LEVEL} LESS 12)
 
 add_library(gles3jni SHARED
             ${GL3STUB_SRC}
-        InitEngine.cpp
+            InitEngine.cpp
             assetManager.cpp
             uniform.cpp
 	        World.cpp
             shader.cpp
-        BufferInit.cpp
+            BufferInit.cpp
             errorChecker.cpp
             draw.cpp
         )

@@ -19,11 +19,7 @@
 
 
     <!-- Simple strings. -->
-    <string-array name="planets_array">
-        <item>eSteps</item>
-        <item>Error</item>
-        <item>colorful</item>
-    </string-array>
+
 
     <string name="gles3jni_activity" translatable="false">GLES3JNI</string>
     <string name="title_activity_main2">Main2Activity</string>

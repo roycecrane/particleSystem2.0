@@ -14,7 +14,6 @@
 
 static AssetManager* g_assMan = NULL;
 static Draw* g_draw = NULL;
-static std::vector<std::string> files;
 
 #if !defined(DYNAMIC_ES3)
 static GLboolean gl3stubInit() {
@@ -24,35 +23,43 @@ static GLboolean gl3stubInit() {
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_android_gles3jni_GLES3JNILib_init(JNIEnv* env, jclass obj, jintArray jDimension) {
-    int *dimension = env->GetIntArrayElements(jDimension, NULL);
-    env->ReleaseIntArrayElements(jDimension,dimension,  0);
+Java_com_android_gles3jni_ParticleSystemLib_init(JNIEnv* env, jclass obj, jintArray jDimension) {
     const char* versionStr = (const char*)glGetString(GL_VERSION);
     if (strstr(versionStr, "OpenGL ES 3.") ) {
+        ALOGE("GL VER 3");
     } else if (strstr(versionStr, "OpenGL ES 2.")) {
         ALOGE("GL VER 2");
     } else {
         ALOGE("Unsupported OpenGL ES version");
     }
-    if(files.empty()) {
-        ALOGE("No shader files loaded");
-    }
-    if(g_assMan){
-        delete g_draw;
-        delete g_assMan;
-    }
+
+    if(g_assMan) delete g_assMan;
+    if(g_draw) delete g_draw;
+
     g_assMan = new AssetManager();
-    g_assMan->initShaderPrograms(files);
-    g_assMan->initBuffs();
     g_draw = new Draw(g_assMan);
-
-
+    ALOGE("test");
 }
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_android_gles3jni_GLES3JNILib_sendString(JNIEnv *env, jclass obj, jstring stringIn){
+Java_com_android_gles3jni_ParticleSystemLib_sendString(JNIEnv *env, jclass obj, jstring stringIn){
     const char *stringOut = env->GetStringUTFChars(stringIn, 0);
     env->ReleaseStringUTFChars(stringIn,stringOut);
-    files.push_back(stringOut);
+    g_assMan->files.push_back(stringOut);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_android_gles3jni_ParticleSystemLib_buildRenderer(JNIEnv *env, jclass obj,jintArray jDispXy) {
+
+    int *dispXY = env->GetIntArrayElements(jDispXy, NULL);
+    env->ReleaseIntArrayElements(jDispXy,dispXY,  0);
+    if(g_assMan->files.empty()) {
+        ALOGE("No shader files loaded");
+    }
+    g_assMan->initShaderPrograms();
+    g_assMan->initUniforms();
+    g_assMan->initWorld(dispXY);
+    g_assMan->initBuffs();
 }

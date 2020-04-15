@@ -18,7 +18,8 @@ public:
     float shapeWidth;
     float shape_height;
     float sampleVelocity;
-    particleSystem(float * pos, float* vel,int sideA,int sideB);
+    float w,h;
+    particleSystem(float* pos, float* vel,int sideA,int sideB,int* dispXY);
    ~particleSystem();
   void initMeshData();
 };

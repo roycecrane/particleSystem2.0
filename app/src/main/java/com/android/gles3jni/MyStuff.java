@@ -1,8 +1,6 @@
 package com.android.gles3jni;
-
 import java.io.IOException;
 import java.io.InputStream;
-
 public class MyStuff {
     static String s1 = "1shader.vs";
     static String s2 = "2shader.vs";
@@ -10,22 +8,18 @@ public class MyStuff {
     static String s4 = "2shader.fs";
 
     static String inFile= "";
-    public  MyStuff(GLES3JNIActivity act){
-
+    public  MyStuff(ParticleSystem act){
         try {
-
             InputStream stream = act.getAssets().open(s1);
             int size = stream.available();
             byte[] buffer = new byte[size];
             stream.read(buffer);
             stream.close();
             s1 = new String(buffer);
-
         } catch (IOException e) {
             // Handle exceptions here
         }
         try {
-
             InputStream stream = act.getAssets().open(s2);
             int size = stream.available();
             byte[] buffer = new byte[size];
@@ -36,7 +30,6 @@ public class MyStuff {
             // Handle exceptions here
         }
         try {
-
             InputStream stream = act.getAssets().open(s3);
             int size = stream.available();
             byte[] buffer = new byte[size];

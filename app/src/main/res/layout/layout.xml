@@ -8,15 +8,29 @@
     tools:layout_editor_absoluteY="81dp">
 
 
-    <com.android.gles3jni.GLES3JNIView
+    <com.android.gles3jni.ParticleSystemView
         android:id="@+id/GLES3JNIView2"
         android:layout_width="409dp"
         android:layout_height="715dp"
+        android:progress="50"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <SeekBar
+        android:id="@+id/seekBar2"
+        android:layout_width="250dp"
+        android:layout_height="66dp"
+        android:layout_marginEnd="7dp"
+        android:layout_marginBottom="80dp"
+        android:progress="50"
+        android:verticalScrollbarPosition="defaultPosition"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.519"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <SeekBar
         android:id="@+id/seekBar"
@@ -42,7 +56,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
 </android.support.constraint.ConstraintLayout>
 

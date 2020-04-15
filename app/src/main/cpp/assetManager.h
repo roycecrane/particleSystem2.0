@@ -8,20 +8,23 @@
 
 class AssetManager{
 public:
-    AssetManager(){};
-    std::vector<Buffer> buffers;
+    AssetManager();
+    ~AssetManager();
     void resetBuffers();
     void initBuffs();
-    void initShaderPrograms(std::vector<std::string> &shaderFiles);
+    void initShaderPrograms();
     void updateUniform(std::string uniName,float *data);
-
-    std::vector<GLuint> shaders;
+    void initWorld(int* dispXY);
+    void initUniforms();
     std::vector<Uniform>  uniforms;
-
+    std::vector<Buffer> buffers;
+    std::vector<std::string> files;
+    std::vector<GLuint> shaders;
+    float * pos;
+    float * vel;
      GLuint* VAO;
      GLuint* FBO;
      int numIndices;
-    ~AssetManager();
 };
 
 

@@ -1,8 +1,8 @@
 #version 300 es
-layout(location =  0) in vec3 posin;
-layout(location =  1) in vec3 vel;
-layout(location =  2) in vec3 outp;
-layout(location = 3 ) in vec3 initP;
+layout(location = 0) in vec3 posin;
+layout(location = 1) in vec3 vel;
+layout(location = 2) in vec3 outp;
+layout(location = 3) in vec3 initP;
 
 uniform vec3 touch;
 uniform vec3 seeker;
@@ -44,7 +44,11 @@ void toPolar( vec3 POS, vec3 VEL, out float R, out float THETA, out float RDOT, 
     if (THETA < 0.0) THETA += 2.0 * pi;
     R = length(vec2((POS).x,(POS).y));
 }
-
+vec3 calculateLRL(vec3 p,vec3 v,float k){
+    vec3 angularMomentum;
+    angularMomentum = (cross(p,v));
+    return cross( v, angularMomentum) - k*p/length(p);
+}
 void main() {
     vec3 pos, angMom, LRL;
     vec3 newA;
@@ -54,13 +58,17 @@ void main() {
     int touchOn = 1;
     float resetVelocity =1.0f*pow(10.0f,11.0f);
     float worldScale = 1.0f*pow(10.0f,-6.0f);
-    float dt = 2.0f*pow(10.0f,-15.0f);
-    float k = 0.8f * pow(10.0f,4.0f);
+    float dt = 0.1f*pow(10.0f,-15.0f);
+    float k = -0.8f * pow(10.0f,4.0f);
 
     float pi = 3.14159265359f;
 
-    float SEEK = (1.0-seeker.x/ 100.0f);
-    k *= (SEEK*30.0f);
+    float seekX = (1.01f-seeker.x/ 100.0f);
+    float seekY = (seeker.y/ 50.0f);
+    float seekZ = seeker.z;
+
+    k *= (seekX*150.0f);
+    if(seekY>0.000001f) dt *= (seekY*2.0f);
     P = vec3((posin).xy,0.0f);
     V = vec3((vel).xy,0.0f);
     O = outp;
@@ -80,7 +88,7 @@ void main() {
     L = length(angMom);
     LRL = cross( V, angMom) - k*pos/length(pos);
     e = length(LRL)/(k);
-
+//    LRL = calculateLRL(p,v,k);
     sizePsi =dot(LRL,pos);
     rotDirection = (cross(pos,V)).z;
     toOrAway = 1.0f * sign((cross(LRL,pos)).z);
@@ -110,24 +118,35 @@ void main() {
     if( dot(LRL,pos) > 0.0 && (cross(pos,LRL)).z == 0.0) psi = 0.0;
 
     toCart(r,theta, rDot,thetaDot, pos, V);
-    newA =cross( V, cross(pos,V)) - k * pos/length(pos);
+    float test=0.0f;
+    newA = cross( V, cross(pos,V)) - k * pos/length(pos);
+
+    test = length(LRL-newA)*0.00000000001;
 
     V = V/worldScale;
     P = pos/worldScale;
     if(touchOn == 1 )P.xy=P.xy+touch.xy;
+    O = vec3(1.0f);
+//    O.y=0.8;
+//    O.z = length(psi);
+//    O.z = 2.2*(length(cross(LRL/length(LRL),P/length(P))));
+//    O.y =2.0/((1.0f-e));
+    if(rDot>0.0)O.x=1.0;
+    if(rDot<0.0)O.x=0.0;
+    if(thetaDot>0.0)O.z=1.0;
+    if(thetaDot<0.0)O.z=0.0;
+
+    //    O.x *= O.x;
+//    color(length(test*psi/pi),O);
+//    O.x = length(test);
+//    O.y=length(psi/2.0/pi-1.0);
+
+}
 //    if(length(e) >= 0.5 ){
 //        V=vec3(0.0f,resetVelocity,0.0);
 //        P=initP;
 //    }
 //    P=initP;
-    B = vec3(0);
-    O = vec3(0);
-    O.z = e*e;
-    O.y = 0.5*(length(cross(LRL/length(LRL),P/length(P))));
-    O.x = 0.4f*length(length(LRL)-length(newA));
-    float rM = 90000.0f*L*L/(k*(1.0f-e));
-     color(e,O);
-}
 //layout(location = 0) in vec3 posin;
 ////layout(location = 1) in vec3 initP;
 //uniform vec3 seeker;

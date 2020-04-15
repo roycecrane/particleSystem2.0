@@ -1,7 +1,7 @@
 #include "BufferInit.h"
 #include "errorChecker.h"
 GLuint Buffer::totalBufferNumber = 0;
-Buffer::Buffer(float* data, int size,GLuint * VAO, GLuint * FBO)
+Buffer::Buffer(float *data, int size,GLuint * VAO, GLuint * FBO)
 {
     checkGlError("Buffer");
     if( totalBufferNumber == 0) {

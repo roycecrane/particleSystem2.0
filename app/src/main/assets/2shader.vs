@@ -9,7 +9,8 @@ uniform mat4 VMat;
 uniform mat4 PMat;
     void main() {
        B= outp;
-        float size = 4.7f;
+        float size = 4.3f;
+//        if(B.x<1.5) size = B.x*10.0;
         gl_PointSize = size;
         gl_Position =vec4(posin.xy,-1.0,1.0f);
     }

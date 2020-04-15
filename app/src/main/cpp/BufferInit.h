@@ -6,7 +6,7 @@
 class Buffer{
 public:
     static GLuint totalBufferNumber;
-     GLuint m_bufferID[2]; // genBuff ID
+     GLuint m_bufferID[2];
      int m_indexCount;
      float* m_data;
      GLuint m_attributeIndex = 0;
