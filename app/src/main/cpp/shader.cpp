@@ -1,6 +1,7 @@
 #include "shader.h"
 #include "errorChecker.h"
 #include <fstream>
+static int shaderNum = 0;
 GLuint Shader::getShaderProgram(std::string &vertFile, std::string &fragFile, const GLchar *const *FBVayrings){
     checkGlError("Shader");
     shaderID = glCreateProgram();
@@ -36,7 +37,10 @@ GLuint Shader::loadShader(const char* src, GLenum shaderType) {
                 ALOGE("Could not compile %s shader:\n%s\n",
                       shaderType == GL_VERTEX_SHADER ? "vertex" : "fragment",
                       infoLog);
+                ALOGV("SHADER %i:\n",shaderNum);
                 free(infoLog);
+
+
             }
         }
         glDeleteShader(shader);

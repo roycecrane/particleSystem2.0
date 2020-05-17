@@ -2,66 +2,97 @@ package com.android.gles3jni;
 import java.io.IOException;
 import java.io.InputStream;
 public class MyStuff {
-    static String s1 = "1shader.vs";
-    static String s2 = "2shader.vs";
-    static String s3 = "1shader.fs";
-    static String s4 = "2shader.fs";
+    static String vs1 = "1shader.vs";
+    static String fs1 = "1shader.fs";
+    static String vs2 = "2shader.vs";
+    static String fs2 = "2shader.fs";
+    static String vs3 = "3shader.vs";
+    static String fs3 = "3shader.fs";
 
     static String inFile= "";
     public  MyStuff(ParticleSystem act){
         try {
-            InputStream stream = act.getAssets().open(s1);
+            InputStream stream = act.getAssets().open(vs1);
             int size = stream.available();
             byte[] buffer = new byte[size];
             stream.read(buffer);
             stream.close();
-            s1 = new String(buffer);
+            vs1 = new String(buffer);
         } catch (IOException e) {
             // Handle exceptions here
         }
         try {
-            InputStream stream = act.getAssets().open(s2);
+            InputStream stream = act.getAssets().open(fs1);
             int size = stream.available();
             byte[] buffer = new byte[size];
             stream.read(buffer);
             stream.close();
-            s2 = new String(buffer);
+            fs1 = new String(buffer);
         } catch (IOException e) {
             // Handle exceptions here
         }
         try {
-            InputStream stream = act.getAssets().open(s3);
+            InputStream stream = act.getAssets().open(vs2);
             int size = stream.available();
             byte[] buffer = new byte[size];
             stream.read(buffer);
             stream.close();
-            s3 = new String(buffer);
+            vs2 = new String(buffer);
         } catch (IOException e) {
             // Handle exceptions here
         }
 
         try {
 
-            InputStream stream = act.getAssets().open(s4);
+            InputStream stream = act.getAssets().open(fs2);
             int size = stream.available();
             byte[] buffer = new byte[size];
             stream.read(buffer);
             stream.close();
-            s4 = new String(buffer);
+            fs2 = new String(buffer);
+        } catch (IOException e) {
+            // Handle exceptions here
+        }
+        try {
+
+            InputStream stream = act.getAssets().open(vs3);
+            int size = stream.available();
+            byte[] buffer = new byte[size];
+            stream.read(buffer);
+            stream.close();
+            vs3 = new String(buffer);
+        } catch (IOException e) {
+            // Handle exceptions here
+        }
+        try {
+
+            InputStream stream = act.getAssets().open(fs3);
+            int size = stream.available();
+            byte[] buffer = new byte[size];
+            stream.read(buffer);
+            stream.close();
+            fs3 = new String(buffer);
         } catch (IOException e) {
             // Handle exceptions here
         }
     }
     public static String getData1(){
-        return s1;
+        return vs1;
     }
     public static String getData2(){
-        return s2;
+        return fs1;
     }
     public static String getData3(){
-        return s3;
+        return vs2;
     }
     public static String getData4(){
-        return s4;
+        return fs2;
     }
+    public static String getData5(){
+        return vs3;
+    }
+    public static String getData6(){
+        return fs3;
+    }
+
 }

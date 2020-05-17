@@ -1,9 +1,12 @@
-
 #ifndef ERRORCHECKER_H
 #define ERRORCHECKER_H
 
-#include <android/log.h>
+#define SHAPE_X 100
+#define SHAPE_Y 500
 
+#define VELOCITY 5000000000000.0f
+
+#include <android/log.h>
 #include <GLES3/gl32.h>
 #define DEBUG 1
 

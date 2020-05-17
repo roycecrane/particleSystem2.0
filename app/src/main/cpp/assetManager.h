@@ -8,6 +8,15 @@
 
 class AssetManager{
 public:
+    float circleRadius;
+    int CircleIndexNum;
+    float* vertcies;
+    float* vertcies2;
+
+    float * velocities;
+    float * velocities2;
+
+    float * triangleVerts;
     AssetManager();
     ~AssetManager();
     void resetBuffers();
@@ -23,7 +32,11 @@ public:
     float * pos;
     float * vel;
      GLuint* VAO;
+    GLuint* VAO2;
+
      GLuint* FBO;
+     GLuint* triangleVAO;
+
      int numIndices;
 };
 

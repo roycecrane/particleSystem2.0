@@ -5,6 +5,8 @@
 #include <GLES3/gl32.h>
 class Uniform{
 public:
+    int m_frame = 0;
+    bool m_isAutomated = false;
     static int numUniforms;
     static std::vector<std::string> nameList;
     float* m_data;
@@ -14,8 +16,10 @@ public:
     const char* m_type;
     GLuint m_progID;
     GLint m_uniformID;
-    Uniform(GLuint progID, std::string name,const char* type);
+    Uniform(GLuint progID, std::string name,const char* type,bool isAutomated);
     void setUniform(const char* type,float* data);
+    void automate(float* data);
+    void setAutomated();
 };
 
 

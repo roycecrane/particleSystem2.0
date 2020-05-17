@@ -26,7 +26,8 @@
 
     <string name="title_activity_fullscreen" translatable="false">FullscreenActivity</string>
     <string name="button">Button</string>
-    <string name="press_this">PRESS THIS</string>
+    <string name="RESET"><RESET></RESET></string>
+    <string name="Color">COLOR</string>
 
 
 </resources>

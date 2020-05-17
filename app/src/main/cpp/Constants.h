@@ -1,0 +1,8 @@
+//
+// Created by whomst on 5/14/20.
+//
+
+#ifndef PARTICLESYSTEM1_0_CONSTANTS_H
+#define PARTICLESYSTEM1_0_CONSTANTS_H
+
+#endif //PARTICLESYSTEM1_0_CONSTANTS_H

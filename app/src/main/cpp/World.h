@@ -1,27 +1,52 @@
 #ifndef WORLD_H
 #define WORLD_H
+#include <vector>
 class World {
 public:
-    virtual void initMeshData() = 0;
+    virtual float* getPositions() = 0;
+    virtual float* initVelocities() = 0;
+    virtual int setPositions() = 0;
     int index_number;
-    float * position;
-    float * velocity;
+    float sampleVelocity;
+
+
 };
 class Triangle: public World{
 public:
-    void initMeshData();
-    Triangle();
+    int index_number;
+    float sampleVelocity;
+    float* m_vertcies;
+    float* m_velocities;
+
+    float* getPositions();
+    float* initVelocities();
+    Triangle(float* verts);
+
+
 };
 class particleSystem: public World{
 public:
-    int numIndices;
-    float shapeWidth;
-    float shape_height;
+    float radius;
     float sampleVelocity;
+     int index_number;
+        int circleIndexNum;
+
+    float * m_vertcies;
+    float *  m_velocities;
     float w,h;
-    particleSystem(float* pos, float* vel,int sideA,int sideB,int* dispXY);
-   ~particleSystem();
-  void initMeshData();
+    void circle();
+
+    static std::vector<float> vertVec;
+    static std::vector<float> velVec;
+    void mesh();
+    particleSystem(float * verts,float* velocities, int* dispXY);
+    float * getPositions();
+    float* initVelocities();
+    int setPositions();
+    ~particleSystem();
+
+
 };
+
 
 #endif //WORLD_H

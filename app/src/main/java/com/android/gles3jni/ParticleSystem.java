@@ -14,8 +14,8 @@ public class ParticleSystem extends Activity {
 
     private long startTime;
     ParticleSystemView mView;
-    private Button mButton;
-    float [] buttonPressed ={1.0f,0.0f,0.0f};
+
+    float [] buttonPressed ={1.0f,1.0f,-0.25f};
     @Override protected void onCreate(Bundle icicle) {
         MyStuff myobj;
         new MyStuff(ParticleSystem.this);
@@ -27,13 +27,37 @@ public class ParticleSystem extends Activity {
         AttributeSet attribs = null;
 
         mView = new ParticleSystemView(getApplication(), attribs);
-        mButton = findViewById(R.id.button);
+        Button mButton = findViewById(R.id.button);
+        Button mButton2 = findViewById(R.id.button2);
+        Button mButton3 = findViewById(R.id.button3);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
                 buttonPressed[0] *= -1.0f;
+
                 ParticleSystemLib.reset();
+            }
+        });
+        mButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                buttonPressed[1] *= -1.0f;
+                buttonPressed[2] = -0.1f;
+
+                ParticleSystemLib.inputs(buttonPressed,"button");
+
+            }
+        });
+        mButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                buttonPressed[2] += 0.1f;
+
+
+                ParticleSystemLib.inputs(buttonPressed,"button");
             }
         });
         seekBar=(SeekBar)findViewById(R.id.seekBar);
@@ -41,7 +65,7 @@ public class ParticleSystem extends Activity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                seekerInput[0] = (float)progress;
+                seekerInput[2] = (float)progress;
                 ParticleSystemLib.inputs(seekerInput,"seeker");
             }
             @Override

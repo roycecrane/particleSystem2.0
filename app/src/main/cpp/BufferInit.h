@@ -3,15 +3,25 @@
 #include <iostream>
 #include <vector>
 #include <GLES3/gl32.h>
+#include "World.h"
 class Buffer{
 public:
+    float* m_vertcies;
+    int m_indexNumber;
     static GLuint totalBufferNumber;
-     GLuint m_bufferID[2];
-     int m_indexCount;
-     float* m_data;
-     GLuint m_attributeIndex = 0;
+    static GLuint* m_VAO;
+    static GLuint* m_FBO;
+
+    bool m_isEmpty;
+    GLuint m_bufferID[3];
+    GLuint test_vao;
+    GLuint m_attributeIndex = 0;
     void fillBuffer();
-     Buffer(float* data, int size, GLuint * VAO, GLuint * FBO);
+    void initVAO(int VAONumber, int bufferNum);
+    Buffer(float * verticies, int index_number, GLuint * VAO, GLuint * FBO,int numBuffers);
+    Buffer(float * verticies, int index_number, GLuint  VAO,int VAONum);
     ~Buffer();
+
+private:
 };
 #endif //BUFFERINIT_H

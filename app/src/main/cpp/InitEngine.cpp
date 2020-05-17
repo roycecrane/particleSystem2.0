@@ -25,8 +25,12 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_android_gles3jni_ParticleSystemLib_init(JNIEnv* env, jclass obj, jintArray jDimension) {
     const char* versionStr = (const char*)glGetString(GL_VERSION);
+    const char* versionStrMInor = (const char*)glGetString(GL_MINOR_VERSION);
+    ALOGE("GL_MINOR:\n%s\n",versionStr,
+          versionStr);
     if (strstr(versionStr, "OpenGL ES 3.") ) {
-        ALOGE("GL VER 3");
+        ALOGE("GL VER 3.");
+
     } else if (strstr(versionStr, "OpenGL ES 2.")) {
         ALOGE("GL VER 2");
     } else {
@@ -59,7 +63,15 @@ Java_com_android_gles3jni_ParticleSystemLib_buildRenderer(JNIEnv *env, jclass ob
         ALOGE("No shader files loaded");
     }
     g_assMan->initShaderPrograms();
+    checkGlError("initShader");
     g_assMan->initUniforms();
+    checkGlError("initUni");
+
     g_assMan->initWorld(dispXY);
+    checkGlError("initWorld");
+
+
     g_assMan->initBuffs();
+    checkGlError("initBuff");
+
 }

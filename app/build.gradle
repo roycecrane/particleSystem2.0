@@ -4,7 +4,7 @@ android {
 
     defaultConfig {
         applicationId 'com.android.two'
-        minSdkVersion 24
+        minSdkVersion 28
         targetSdkVersion 29
         externalNativeBuild {
             cmake {
@@ -27,6 +27,7 @@ android {
         }
     }
     ndkVersion = '21.0.6113669'
+    buildToolsVersion = '29.0.3'
 }
 
 dependencies {
