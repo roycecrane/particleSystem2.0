@@ -3,64 +3,80 @@
 GLuint* Buffer:: m_VAO;
 GLuint* Buffer::m_FBO;
 GLuint Buffer::totalBufferNumber = 0;
-Buffer::Buffer(float * verticies, int index_number,GLuint * VAO, GLuint * FBO, int numBuffers)
+Buffer::Buffer(std::vector<float> verticies,int size, int index_number,GLuint * VAO, GLuint * FBO, int numBuffers)
 {
-
     m_vertcies = verticies;
     checkGlError("VAO");
-    m_indexNumber= index_number * 3;
+    m_indexNumber= index_number;
     m_VAO = VAO;
     m_FBO = FBO;
     m_attributeIndex = totalBufferNumber;
     totalBufferNumber++;
-    glGenBuffers(numBuffers,m_bufferID);
-        for (int i = 0; i < numBuffers; ++i) {
-            initVAO(i,i);
-        }
-}
+    glGenBuffers(2,m_bufferID);
+            initVAO(size,2);
 
-Buffer::Buffer(float * verticies, int index_number,GLuint  VAO, int VAONum){
+}
+Buffer::Buffer(std::vector<float> verticies,int size, int index_number,GLuint * VAO)
+{
     m_vertcies = verticies;
-    m_indexNumber= index_number * 3;
-    test_vao = VAO;
+    checkGlError("VAO");
+    m_indexNumber= index_number;
+    m_VAO = VAO;
     m_FBO = NULL;
-    glGenBuffers(1,&m_bufferID[0]);
-    m_attributeIndex = 0;
+    m_attributeIndex = totalBufferNumber;
     totalBufferNumber++;
-    initVAO(VAONum,0);
+    glGenBuffers(1,m_bufferID);
+    initVAO(size,1);
+
 }
+void Buffer::initVAO(int size,int bufferNum  ){
 
+        glBindBuffer(GL_ARRAY_BUFFER, m_bufferID[0]);
+        glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(m_indexNumber * sizeof(float)), NULL, GL_DYNAMIC_COPY);
+        if(bufferNum==2){
+            glBindBuffer(GL_ARRAY_BUFFER, m_bufferID[1]);
+            glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(m_indexNumber * sizeof(float)), NULL, GL_DYNAMIC_COPY);
+        }
 
-void Buffer::initVAO(int VAONumber,int bufferNum ){
-    //buffer NULL values
-//    __android_log_print(ANDROID_LOG_ERROR, "vtx", "%f",planetX);
-    glBindBuffer(GL_ARRAY_BUFFER, m_bufferID[bufferNum]);
-    glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(m_indexNumber * sizeof(float)), NULL, GL_DYNAMIC_COPY);
-    //buffer given values
-    if(m_vertcies!=NULL) {
-        glBindBuffer(GL_ARRAY_BUFFER, m_bufferID[bufferNum]);
-        glBufferSubData(GL_ARRAY_BUFFER, 0 ,(m_indexNumber * sizeof(float)), &m_vertcies[0]);
+    if(!m_vertcies.empty()) {
+        glBindBuffer(GL_ARRAY_BUFFER, m_bufferID[0]);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, (m_indexNumber * sizeof(float)), &m_vertcies[0]);
+        if(bufferNum==2){
+            glBindBuffer(GL_ARRAY_BUFFER, m_bufferID[1]);
+            glBufferSubData(GL_ARRAY_BUFFER, 0 ,(m_indexNumber * sizeof(float)), &m_vertcies[0]);
+        }
+
     }
-    if(VAONumber== 3){
-        glBindVertexArray(test_vao);
-    } else glBindVertexArray(m_VAO[VAONumber]);
-    glBindBuffer(GL_ARRAY_BUFFER, m_bufferID[bufferNum]);
-    glVertexAttribPointer(m_attributeIndex, 3, GL_FLOAT, GL_FALSE,  sizeof(float) * 3, (void*)0);
-    glEnableVertexAttribArray(m_attributeIndex);
+    if(m_attributeIndex ==5 ) {
+
+        }
     glBindVertexArray(0);
-    if(m_FBO != NULL){
-        glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, m_FBO[VAONumber]);
-        glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, m_attributeIndex, m_bufferID[VAONumber]);
+        glBindVertexArray(m_VAO[0]);
+        glBindBuffer(GL_ARRAY_BUFFER, m_bufferID[0]);
+        glVertexAttribPointer(m_attributeIndex, size, GL_FLOAT, GL_FALSE,  sizeof(float) *size, (void*)0);
+        glEnableVertexAttribArray(m_attributeIndex);
+        glBindVertexArray(0);
+        if(bufferNum==2) {
+            glBindVertexArray(m_VAO[1]);
+            glBindBuffer(GL_ARRAY_BUFFER, m_bufferID[1]);
+            glVertexAttribPointer(m_attributeIndex, size, GL_FLOAT, GL_FALSE, sizeof(float) * size,(void *) 0);
+            glEnableVertexAttribArray(m_attributeIndex);
+            glBindVertexArray(0);
+        }
 
+    if(m_FBO != NULL) {
+        glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, m_FBO[0]);
+        glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, m_attributeIndex, m_bufferID[0]);
+        glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, m_FBO[1]);
+        glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, m_attributeIndex, m_bufferID[1]);
     }
 }
+
 
 void Buffer::fillBuffer() {
-    if(m_vertcies!=NULL) {
+    if(!m_vertcies.empty()) {
     glBindBuffer(GL_ARRAY_BUFFER, m_bufferID[1]);
     glBufferSubData(GL_ARRAY_BUFFER, 0 ,(m_indexNumber * sizeof(float)), &m_vertcies[0]);
-
-
     }
 }
 Buffer::~Buffer() {

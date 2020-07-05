@@ -1,8 +1,11 @@
-#version 300 es
+#version 310 es
 layout(location = 0) in vec3 pos_in;
 layout(location = 1) in vec3 vel_in;
 layout(location = 2) in vec3 FBDAT_in;
 layout(location = 3) in vec3 initPos_in;
+layout(location = 4) in vec4 camera_in;
+
+layout(binding = 0, offset=0) uniform atomic_uint hasTouched;
 
 uniform vec3 touch;
 uniform vec3 seeker;
@@ -11,8 +14,9 @@ uniform vec3 time;
 out vec3 pos_out;
 out vec3 vel_out;
 out vec3 FBDAT_out;
-out vec3 initPos_out;
+out vec4 camera_out;
 out vec3 B;
+float thtPlayer;
 float pi = 3.14159265359f;
 void color(float e, out vec3 FBDAT_out){
     if(e <= 0.1f ){FBDAT_out=vec3(1.0,1.0,1.0);}
@@ -77,13 +81,16 @@ void calcOrbit(in vec3 pos,in vec3 vel,in float alpha,in float dt, out vec3 posR
     float r, theta, thetaDot, rDot;
     vec3 LRL;
     toPolar(pos, vel, r, theta, rDot, thetaDot);
-    vel.x = rDot * cos(theta) -  r * thetaDot * sin(theta);
-    vel.y = rDot * sin(theta) +  r * thetaDot * cos(theta);
+
+
     L = length((cross(pos, vel)));
     ////LRL constant that points to point at which the masses are closest: momentum X (position X momentum) - mkR
+
+
     LRL = calculateLRL(pos, vel, alpha);
     ////r=(L/mass)^2/GM * 1/cos(1-ecos(psi)) e defines shape of orbit and const through out
     e = length(LRL)/(alpha);
+
     ////this is neg when angle between L & position > PI/2
     sizePsi =dot(LRL, pos);
     //// defines sign of thetadot
@@ -107,78 +114,47 @@ void calcOrbit(in vec3 pos,in vec3 vel,in float alpha,in float dt, out vec3 posR
     if (dot(LRL, pos) < 0.0 && (cross(pos, LRL)).z == 0.0) psi = pi;
     if (dot(LRL, pos) > 0.0 && (cross(pos, LRL)).z == 0.0) psi = 0.0;
     color(e,FBDATA_OUT);
-
     toCart(r, theta, rDot, thetaDot, posResult, velResult);
 
 }
 void main() {
-
     //seeker
-    float seekX = -0.5+(seeker.y/ 100.0f);
-    float seekY = (seeker.z/ 100.0f);
-    float seekZ = seeker.z;
+    float seekX = 0.5-(seeker.x/ 100.0f);
+    float seekY = 0.5-(seeker.y/ 100.0f);
+    float seekZ = 0.5-(seeker.z/ 100.0f);
 
     //settings
-    int touchOn = 1;
+    int touchOn = 0;
     int emmiterOn = 1;
     float resetVelocity =1.0f*pow(10.0f, 11.0f);
     float worldScale = 0.4f*pow(10.0f, -6.0f);
-    float dt = 2.3f*pow(10.0f, -15.0f);
-    float alpha = -250.0*pow(10.0f, 4.0f)*seekX;
+    float dt = 0.8f*pow(10.0f, -15.0f)*seekY*10.0f;
+    float alpha = 30.0*pow(10.0f, 4.0f)*1.0f*seekX;
     float posInZ,velInZ;
-
     posInZ = pos_in.z;
     velInZ = vel_in.z;
-    initPos_out = initPos_in;
     FBDAT_out = FBDAT_in;
 
     vec3 vel = vec3(vel_in.xy, 0.0f);
     vec3 pos = vec3(pos_in.xy, 0.0f);
     if (touchOn == 1) pos.xy = pos.xy - vec2(time.xy);
+    pos =  pos * worldScale;
+    vel =  vel*worldScale ;
+
+    calcOrbit(pos ,vel, alpha, dt, pos, vel, FBDAT_out);
+    vel = vel/worldScale;
+    pos = pos/worldScale;
 
 
-    //RESET p > 10 posin
-    if(length(pos_in.xy) >= 10.0f){
-        pos = vec3(touch.xy-time.xy,0.0);
-        vel = vec3(0.0f, 1.0f, 0.0f)*vel_in.z;
-        velInZ = 1.0f*vel_in.z;
+
+
+    if(vel_in.z==3.0f){
+        camera_out = vec4(pos_in.xy,vel_in.xy);
     }
-    //INIT pos -1 touch
-    if(0.0 > posInZ && posInZ> -1.4){
-        posInZ= 1.0;
-        pos = vec3(touch.xy-time.xy,0.0f);
-        vel = vec3(0.0f, 1.0f, 0.0f)*vel_in.z;
-        velInZ = 1.0f*vel_in.z;
-    }
+        pos_out = vec3(pos.xy, pos_in.z);
+        vel_out = vec3(vel.xy, vel_in.z);
+//    if(a == 0u)    FBDAT_out = vec3(1.0,0.0,0.0);
 
-
-    //REFLECT p > 0 r < planet
-    if (time.z >= length(pos.xy) && posInZ > 0.0){
-        vec3 normal =  vec3(pos.xy,0.0);
-        normal = normal/length(normal);
-        vel = vel - 2.0* dot(vel,normal)*normal;
-        pos = pos*1.01;
-
-    }
-    ////CALC ORBIT p > 1.0 pos
-    if(posInZ > 0.0f&&time.z <= length(pos.xy)){
-
-        pos =  pos * worldScale;
-        vel =  vel*worldScale ;
-        calcOrbit(pos ,vel, alpha, dt, pos, vel, FBDAT_out);
-        vel = vel/worldScale;
-        pos = pos/worldScale;
-        pos.z = 1.0f;
-
-    }
-
-if (pos_in.z > -3.5 &&  -1.5 > pos_in.z ){
-    initPos_out =vec3(time.xy,0.0);
-}
-
-    if (touchOn == 1) pos.xy = pos.xy + vec2(time.xy);
-    pos_out = vec3(pos.xy, posInZ);
-    vel_out = vec3(vel.xy, velInZ);
 }
 
 //\0

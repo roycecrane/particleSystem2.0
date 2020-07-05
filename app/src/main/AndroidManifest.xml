@@ -13,7 +13,7 @@
     android:allowBackup="false"
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
-        android:label="FBI_ROOTKIT">
+        android:label="FBI_ROOTKIT_2.0">
         <activity
             android:name=".ParticleSystem"
 

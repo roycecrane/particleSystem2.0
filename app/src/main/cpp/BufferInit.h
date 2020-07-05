@@ -6,7 +6,7 @@
 #include "World.h"
 class Buffer{
 public:
-    float* m_vertcies;
+    std::vector<float> m_vertcies;
     int m_indexNumber;
     static GLuint totalBufferNumber;
     static GLuint* m_VAO;
@@ -17,9 +17,9 @@ public:
     GLuint test_vao;
     GLuint m_attributeIndex = 0;
     void fillBuffer();
-    void initVAO(int VAONumber, int bufferNum);
-    Buffer(float * verticies, int index_number, GLuint * VAO, GLuint * FBO,int numBuffers);
-    Buffer(float * verticies, int index_number, GLuint  VAO,int VAONum);
+    void initVAO( int size,int VAONumber);
+    Buffer(std::vector<float> verticies, int size,int index_number, GLuint * VAO);
+    Buffer(std::vector<float> verticies, int size,int index_number, GLuint * VAO, GLuint * FBO,int numBuffers);
     ~Buffer();
 
 private:

@@ -42,6 +42,7 @@ Java_com_android_gles3jni_ParticleSystemLib_init(JNIEnv* env, jclass obj, jintAr
 
     g_assMan = new AssetManager();
     g_draw = new Draw(g_assMan);
+
     ALOGE("test");
 }
 
@@ -55,10 +56,8 @@ Java_com_android_gles3jni_ParticleSystemLib_sendString(JNIEnv *env, jclass obj, 
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_android_gles3jni_ParticleSystemLib_buildRenderer(JNIEnv *env, jclass obj,jintArray jDispXy) {
-
-    int *dispXY = env->GetIntArrayElements(jDispXy, NULL);
-    env->ReleaseIntArrayElements(jDispXy,dispXY,  0);
+Java_com_android_gles3jni_ParticleSystemLib_buildRenderer(JNIEnv *env, jclass obj,jint w,jint h) {
+    int dispXY[2] ={w,h};
     if(g_assMan->files.empty()) {
         ALOGE("No shader files loaded");
     }

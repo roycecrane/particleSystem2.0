@@ -4,7 +4,7 @@
 #define SHAPE_X 100
 #define SHAPE_Y 500
 
-#define VELOCITY 5000000000000.0f
+#define VELOCITY 1000000000000.0f
 
 #include <android/log.h>
 #include <GLES3/gl32.h>

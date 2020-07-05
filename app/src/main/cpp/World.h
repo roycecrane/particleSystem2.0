@@ -1,52 +1,29 @@
 #ifndef WORLD_H
 #define WORLD_H
 #include <vector>
-class World {
+
+class Grid{
 public:
-    virtual float* getPositions() = 0;
-    virtual float* initVelocities() = 0;
-    virtual int setPositions() = 0;
-    int index_number;
-    float sampleVelocity;
-
-
-};
-class Triangle: public World{
-public:
-    int index_number;
-    float sampleVelocity;
-    float* m_vertcies;
-    float* m_velocities;
-
-    float* getPositions();
-    float* initVelocities();
-    Triangle(float* verts);
-
-
-};
-class particleSystem: public World{
-public:
-    float radius;
-    float sampleVelocity;
-     int index_number;
-        int circleIndexNum;
-
-    float * m_vertcies;
-    float *  m_velocities;
+    int m_baseIndex;
     float w,h;
-    void circle();
+    Grid(const int * dispXY, int baseIndex);
+    void setPositions(std::vector<float>& verts);
+    void initVelocities(std::vector<float>& vels);
+    int index_number;
 
-    static std::vector<float> vertVec;
-    static std::vector<float> velVec;
-    void mesh();
-    particleSystem(float * verts,float* velocities, int* dispXY);
-    float * getPositions();
-    float* initVelocities();
-    int setPositions();
-    ~particleSystem();
-
-
+    ~Grid();
 };
+class Circle{
+public:
+    int m_baseIndex;
+    float w,h;
+    void setPositions(std::vector<float>& verts);
+    void initVelocities(std::vector<float>& vels);
+    Circle(int * dispXY, int baseIndex);
+    float radius;
+    ~Circle();
 
+    int index_number;
+};
 
 #endif //WORLD_H

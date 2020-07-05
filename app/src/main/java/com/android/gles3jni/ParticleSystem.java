@@ -65,7 +65,7 @@ public class ParticleSystem extends Activity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                seekerInput[2] = (float)progress;
+                seekerInput[1] = (float)progress;
                 ParticleSystemLib.inputs(seekerInput,"seeker");
             }
             @Override
@@ -79,7 +79,7 @@ public class ParticleSystem extends Activity {
         seekBar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                seekerInput[1] = (float)progress;
+                seekerInput[0] = (float)progress;
                 ParticleSystemLib.inputs(seekerInput,"seeker");
             }
             @Override

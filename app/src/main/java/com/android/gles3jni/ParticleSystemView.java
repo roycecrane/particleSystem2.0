@@ -32,10 +32,6 @@ class ParticleSystemView extends GLSurfaceView {
         super(context);
         setEGLConfigChooser(8, 8, 8, 0, 16, 0);
         setEGLContextClientVersion(3);
-        m_width = getScreenWidth();
-        m_height =getScreenHeight();
-        width =(float)getScreenWidth();
-        height =(float)getScreenHeight();
         dispXY[0] = getScreenWidth();
         dispXY[1] = getScreenHeight();
         setRenderer(new Renderer());
@@ -52,16 +48,16 @@ class ParticleSystemView extends GLSurfaceView {
             int m_height = getScreenHeight();
             float ratio = (float) m_width / (float)m_height;
             GLES30.glViewport(0, 0, m_width, m_height);
-            Matrix.frustumM(pMat, 0, -ratio, ratio, -1, 1, 1, 100);
-            Matrix.setLookAtM(vMat, 0,
-                    0, -5, 7,
-                    0f, 1f, 4f,
-                    0f, 3.0f, 1.0f);
-
-            ParticleSystemLib.inputs(pMat,"PMat");
-            ParticleSystemLib.inputs(vMat,"VMat");
-            ParticleSystemLib.inputs(pMat,"PMat2");
-            ParticleSystemLib.inputs(vMat,"VMat2");
+//            Matrix.frustumM(pMat, 0, -ratio, ratio, -1, 1, 1, 100);
+//            Matrix.setLookAtM(vMat, 0,
+//                    0, -5, 9,
+//                    0f, 1f, 4f,
+//                    0f, 3.0f, 1.0f);
+//
+//            ParticleSystemLib.inputs(pMat,"PMat");
+//            ParticleSystemLib.inputs(vMat,"VMat");
+//            ParticleSystemLib.inputs(pMat,"PMat2");
+//            ParticleSystemLib.inputs(vMat,"VMat2");
         }
         public void onSurfaceChanged(GL10 gl, int width, int height) {
             ParticleSystemLib.init();
@@ -72,7 +68,7 @@ class ParticleSystemView extends GLSurfaceView {
             ParticleSystemLib.sendString( MyStuff.getData5());
             ParticleSystemLib.sendString( MyStuff.getData6());
 
-            ParticleSystemLib.buildRenderer(dispXY);
+            ParticleSystemLib.buildRenderer(dispXY[0],dispXY[1]);
             perspective();
         }
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {
@@ -96,7 +92,7 @@ class ParticleSystemView extends GLSurfaceView {
         inputArray[0] = (touchX -(float)m_width/2.0f)/(float)m_width;
         inputArray[1] = -(touchY- (float)m_height/2.0f)/(float)m_height;
 
-        inputArray[0]*= 2.0f;
+        inputArray[0]*= 4.0f;
         inputArray[1]*= 6.0f;
         ParticleSystemLib.inputs(inputArray,"touch");
         return true;

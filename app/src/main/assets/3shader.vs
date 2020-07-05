@@ -1,23 +1,20 @@
 #version 300 es
-layout(location = 0) in vec3 pos;
-uniform mat4 VMat2;
-uniform mat4 PMat2;
-uniform vec3 time2;
+layout(location = 0) in vec3 pos2;
+uniform mat4 pMAT2;
+uniform mat4 vMAT2;
+uniform mat4 mMAT2;
 out vec3 col;
+float PI = 3.14159265;
 void main() {
     col = vec3(0.0f);
-    gl_PointSize =  2.5;
-    float PI = 3.14159265;
-    vec2 P =pos.xy+time2.xy;
-    float gravity= -10.0f;
-    float r = length(P)*0.3f;
-    if (length(r) > 0.001f ){
-         gravity = 1.0-0.35f/(r*r);
-    }
-    if( pos.z > -1.5){
-        col = vec3(1.0,0.0,0.0);
-        gl_Position=PMat2*VMat2*vec4(P,gravity, 1.0f);
-    }
+    gl_PointSize =  6.5;
+    vec2 P =pos2.xy;
+    float gravity= -1.0f;
+    float r = 3.5*length(pos2.xy);
+    float zz =1.0f/(r*r);
+    col = vec3(length(pos2.x),length(pos2.y),0.0);
 
+
+    gl_Position=pMAT2*vMAT2* vec4(pos2.xy , 1.0-zz, 1.0f);
 }
 //\0

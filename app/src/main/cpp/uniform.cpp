@@ -1,5 +1,9 @@
 #include "uniform.h"
 #include "errorChecker.h"
+#include "glm/detail/type_mat.hpp"
+#include "glm/detail/type_mat4x4.hpp"
+#include "glm/gtc/type_ptr.inl"
+
 int Uniform::numUniforms = 0;
 Uniform::Uniform(GLuint progID, std::string name,const char*type,bool isAutomated) {
     m_name = name;
@@ -8,6 +12,7 @@ Uniform::Uniform(GLuint progID, std::string name,const char*type,bool isAutomate
     m_progID = progID;
     m_ID = numUniforms;
     numUniforms += 1;
+
     m_uniformID = (glGetUniformLocation(progID, m_name.c_str()));
 
     if(strcmp(type ,"MAT4")==0){
@@ -41,9 +46,13 @@ void Uniform::setUniform(const char* type, float* data){
             glUseProgram(0);
         }
         if(m_name=="seeker"){
-        __android_log_print(ANDROID_LOG_ERROR, "seeker", "%f",m_data[2]);
 
         }
+
+}
+void Uniform::setUniform(const char* type, glm::mat4 &glmMatrix){
+
+
 
 }
 void Uniform::automate(float* data){

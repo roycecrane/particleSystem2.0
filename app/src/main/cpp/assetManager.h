@@ -5,23 +5,40 @@
 #include "World.h"
 #include "uniform.h"
 #include "BufferInit.h"
+#include "glm/detail/type_mat.hpp"
+#include "glm/detail/type_mat4x4.hpp"
 
 class AssetManager{
 public:
     float circleRadius;
-    int CircleIndexNum;
-    float* vertcies;
-    float* vertcies2;
+    int circleIndexNum;
+    int gridIndexNum;
 
-    float * velocities;
-    float * velocities2;
+    std::vector<float> vertcies;
+    float * camera;
+    std::vector<float> velocities;
+    std::vector<float> circleVerts;
+    std::vector<float> circleVels;
+    std::vector<float> gridVerts;
 
-    float * triangleVerts;
     AssetManager();
     ~AssetManager();
     void resetBuffers();
     void initBuffs();
+    int d_height;
+    int d_width;
+    GLint  mMAT;
+    GLint  vMAT;
+    GLint  pMAT;
+    GLint  mMAT2;
+    GLint  vMAT2;
+    GLint  pMAT2;
+    GLint  cam;
+    GLint  cam2;
+
     void initShaderPrograms();
+    void updateUniform(std::string uniName,glm::mat4& data);
+
     void updateUniform(std::string uniName,float *data);
     void initWorld(int* dispXY);
     void initUniforms();
@@ -33,6 +50,8 @@ public:
     float * vel;
      GLuint* VAO;
     GLuint* VAO2;
+    GLuint* counters;
+    GLuint  atomicBuffer;
 
      GLuint* FBO;
      GLuint* triangleVAO;
